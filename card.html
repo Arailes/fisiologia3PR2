@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memorex Medicina: Fisiologia Integrada</title>
+    <title>MemoCARDs Med: Fisiologia III</title>
     <style>
         :root {
-            --primary-color: #005b96; /* Azul Médico Escuro */
+            --primary-color: #005b96;
             --secondary-color: #03396c;
             --accent-color: #b3cde0;
             --bg-color: #f0f4f8;
@@ -55,13 +55,13 @@
         /* Grid Principal */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 25px;
             max-width: 1200px;
             width: 100%;
         }
 
-        /* Cards Principais */
+        /* Cards */
         .module-card {
             background-color: var(--card-bg);
             border-radius: var(--border-radius);
@@ -82,14 +82,14 @@
         }
 
         .module-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--secondary-color);
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .module-desc {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--text-light);
             line-height: 1.5;
             margin-bottom: 20px;
@@ -99,10 +99,12 @@
             align-self: flex-start;
             background-color: var(--primary-color);
             color: white;
-            padding: 8px 16px;
+            padding: 8px 20px;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Modal */
@@ -124,12 +126,12 @@
             background-color: white;
             width: 95%;
             max-width: 900px;
-            height: 90vh; /* Aumentado para aproveitar melhor a tela */
+            height: 90vh;
             border-radius: var(--border-radius);
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* O conteúdo interno que rola */
+            overflow: hidden;
             animation: fadeIn 0.3s ease;
         }
 
@@ -145,7 +147,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-shrink: 0; /* Impede o cabeçalho de encolher */
+            flex-shrink: 0;
         }
 
         .close-btn {
@@ -157,34 +159,33 @@
             line-height: 1;
         }
 
-        /* CORREÇÃO CRÍTICA AQUI: Scroll no Modal Body */
         .modal-body {
             padding: 20px;
-            overflow-y: auto; /* Habilita scroll vertical */
-            -webkit-overflow-scrolling: touch; /* Suavidade no mobile */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
             background-color: #f9f9f9;
-            flex-grow: 1; /* Ocupa todo espaço restante */
+            flex-grow: 1;
             display: block;
         }
 
-        /* Accordion (Subtópicos) */
+        /* Acordeão */
         .accordion-item {
             margin-bottom: 15px;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
             background: white;
-            overflow: hidden; /* Mantém o conteúdo contido */
+            overflow: hidden;
         }
 
         .accordion-header {
             width: 100%;
             background-color: white;
-            padding: 15px 20px;
+            padding: 18px 20px;
             text-align: left;
             border: none;
             outline: none;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.2s;
             font-size: 1.1rem;
             font-weight: 600;
             color: var(--secondary-color);
@@ -203,7 +204,6 @@
             border-bottom: 1px solid #e0e0e0;
         }
 
-        /* CORREÇÃO CRÍTICA AQUI: Altura dinâmica */
         .accordion-content {
             padding: 0 20px;
             max-height: 0;
@@ -214,21 +214,24 @@
 
         .accordion-content.open {
             padding: 20px;
-            /* Removido o max-height fixo do CSS para o JS calcular */
+            /* Altura calculada via JS */
         }
 
-        /* Tipografia do Conteúdo */
+        /* Formatação de Texto */
         .content-text h3 {
             color: var(--primary-color);
-            margin-top: 15px;
+            margin-top: 20px;
             margin-bottom: 10px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 10px;
         }
 
         .content-text p {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             line-height: 1.6;
             color: #444;
+            text-align: justify;
         }
 
         .content-text ul {
@@ -238,21 +241,23 @@
         }
 
         .content-text li {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            line-height: 1.5;
         }
 
-        /* Tabelas Médicas */
+        /* Tabelas */
         .med-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 15px 0;
+            margin: 20px 0;
             font-size: 0.9rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: white;
         }
 
         .med-table th, .med-table td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 12px;
             text-align: left;
         }
 
@@ -262,64 +267,59 @@
         }
 
         .med-table tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #f8f9fa;
         }
 
-        .source-ref {
-            font-size: 0.75em;
-            color: #999;
-            vertical-align: super;
-            margin-left: 2px;
-        }
-
+        /* Tags */
         .tag {
             display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
             font-weight: bold;
-            margin-right: 5px;
+            margin-right: 8px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
         }
-        .tag-pathology { background-color: #ffebee; color: #c62828; }
-        .tag-physiology { background-color: #e8f5e9; color: #2e7d32; }
-        .tag-anatomy { background-color: #fff3e0; color: #ef6c00; }
+        .tag-pathology { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+        .tag-physiology { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .tag-clinical { background-color: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; }
 
+        /* Footer */
         footer {
             margin-top: 50px;
             color: #888;
             font-size: 0.8rem;
             text-align: center;
         }
-        
+
         @media (max-width: 600px) {
+            .modal-content { width: 100%; height: 100%; border-radius: 0; }
             h1 { font-size: 1.8rem; }
-            .module-card { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>MemoCARDs: Medicina IDOMED S3</h1>
-        <p class="subtitle">Resumos Interativos de Fisiologia III</p>
+        <h1>MemoCARDs: Medicina IDOMED</h1>
+        <p class="subtitle">Fisiologia III</p>
     </header>
 
-    <div class="grid-container" id="mainGrid">
-        </div>
+    <div class="grid-container" id="mainGrid"></div>
 
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalTitle">Título do Módulo</h2>
+                <h2 id="modalTitle">Título</h2>
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
-            <div class="modal-body" id="modalBody">
-                </div>
+            <div class="modal-body" id="modalBody"></div>
         </div>
     </div>
 
     <footer>
-        <p>Baseado em fontes acadêmicas [1-436] IDOMED - QUIXADA CE by Arailes Feitosa T6A. Uso gratuito e exclusivo para estudo.</p>
+        <p>Material de estudo baseado em referências acadêmicas fornecidas - IDOMED - Quixada-CE by Arailes Feitosa T6A.</p>
     </footer>
 
     <script>
@@ -327,129 +327,157 @@
             {
                 id: "renal_pathology",
                 title: "Fisiologia Renal, Glomerulopatias e Injúria",
-                desc: "Equilíbrio acidobásico, Síndromes Nefrítica e Nefrótica, IRA vs IRC e Bexiga Neurogênica.",
+                desc: "Distúrbios acidobásicos, fisiopatologia das síndromes nefrítica/nefrótica, IRA e IRC.",
                 topics: [
                     {
-                        title: "1. Equilíbrio Acidobásico",
+                        title: "1. Controle do Metabolismo Acidobásico",
                         content: `
-                            <p>O equilíbrio é centrado na regulação de CO₂, H⁺ e HCO₃⁻. Valores de pH < 7.35 indicam acidose; > [cite_start]7.45 indicam alcalose[cite: 176].</p>
+                            <p><span class="tag tag-physiology">Fisiologia</span> O equilíbrio é mantido pela regulação de CO₂, H⁺ e HCO₃⁻ (Equação: CO₂ + H₂O ⇌ H₂CO₃ ⇌ H⁺ + HCO₃⁻). O pH sanguíneo normal varia de <strong>7,35 a 7,45</strong>.</p>
                             <h3>Mecanismos Compensatórios</h3>
                             <ul>
-                                <li><strong>Pulmonar (Rápido):</strong> Ajusta o CO₂ via frequência respiratória. Hiperventilação elimina ácido (CO₂); [cite_start]Hipoventilação retém ácido [cite: 180-182].</li>
-                                [cite_start]<li><strong>Renal (Lento):</strong> Reabsorve HCO₃⁻ ou excreta H⁺ (regeneração de bicarbonato) [cite: 183-186].</li>
+                                <li><strong>Pulmonar (Rápido):</strong> Controla a eliminação de CO₂ (ácido volátil). 
+                                    <br><em>Hiperventilação:</em> Elimina CO₂ (aumenta pH). 
+                                    <br><em>Hipoventilação:</em> Retém CO₂ (diminui pH).</li>
+                                <li><strong>Renal (Lento):</strong> Controla o Bicarbonato (HCO₃⁻). Atua por duas vias principais:
+                                    <br>1. Reabsorção do bicarbonato filtrado.
+                                    <br>2. Regeneração de bicarbonato através da excreção de H⁺ (tamponado por amônio NH₄⁺).</li>
                             </ul>
                             <table class="med-table">
-                                <tr><th>Origem</th><th>Distúrbio</th><th>Causa Primária</th></tr>
-                                <tr><td>Renal</td><td>Acidose Metabólica</td><td>↓ HCO₃⁻ ou ↑ H⁺</td></tr>
-                                <tr><td>Renal</td><td>Alcalose Metabólica</td><td>↑ HCO₃⁻ ou ↓ H⁺</td></tr>
-                                <tr><td>Pulmonar</td><td>Acidose Respiratória</td><td>Retenção de CO₂ (hipoventilação)</td></tr>
-                                <tr><td>Pulmonar</td><td>Alcalose Respiratória</td><td>Perda de CO₂ (hiperventilação)</td></tr>
+                                <tr><th>Origem</th><th>Distúrbio</th><th>Mecanismo Primário</th></tr>
+                                <tr><td>Renal</td><td>Acidose Metabólica</td><td>Queda de HCO₃⁻ ou acúmulo de ácido fixo (H⁺).</td></tr>
+                                <tr><td>Renal</td><td>Alcalose Metabólica</td><td>Aumento de HCO₃⁻ ou perda de H⁺ (vômitos).</td></tr>
+                                <tr><td>Pulmonar</td><td>Acidose Respiratória</td><td>Retenção de CO₂ (hipoventilação).</td></tr>
+                                <tr><td>Pulmonar</td><td>Alcalose Respiratória</td><td>Excreção excessiva de CO₂ (hiperventilação).</td></tr>
                             </table>
                         `
                     },
                     {
                         title: "2. Síndrome Nefrítica (Inflamatória)",
                         content: `
-                            [cite_start]<p><span class="tag tag-pathology">Inflamação</span> Protótipo: Glomerulonefrite Pós-Estreptocócica (GNPE)[cite: 216].</p>
-                            <h3>Fisiopatologia</h3>
-                            [cite_start]<p>Inflamação glomerular reduz fendas de filtração → Oligúria → Retenção de Na/Água → Hipertensão e Edema [cite: 200-201].</p>
-                            <h3>Achados Clínicos e Laboratoriais</h3>
+                            <p><span class="tag tag-pathology">Patologia</span> Processo inflamatório glomerular agudo.</p>
+                            <h3>Tríade Clássica e Fisiopatologia</h3>
                             <ul>
-                                <li><strong>Tríade:</strong> Hematúria, Hipertensão, Edema.</li>
-                                [cite_start]<li><strong>Urina:</strong> Cilindros Hemáticos e Dismorfismo Eritrocitário (hemácias fragmentadas) [cite: 205-206].</li>
-                                <li><strong>GNPE:</strong> Comum em crianças pós-faringite. [cite_start]C3/C4 reduzidos, ASLO elevado [cite: 217-218].</li>
+                                <li><strong>Oligúria e Azotemia:</strong> Inflamação reduz as fendas de filtração e a área de superfície glomerular → Queda na filtração glomerular.</li>
+                                <li><strong>Hipertensão e Edema:</strong> Consequência da retenção de sódio e água (expansão volêmica) secundária à oligúria.</li>
+                                <li><strong>Hematúria:</strong> Ruptura das alças capilares permite passagem de hemácias.</li>
                             </ul>
+                            <h3>Achados Urinários Específicos</h3>
+                            <ul>
+                                <li><strong>Dismorfismo Eritrocitário:</strong> Hemácias distorcidas/fragmentadas ao passar pelas fendas danificadas.</li>
+                                <li><strong>Cilindros Hemáticos:</strong> Hemácias aderem à Proteína de Tamm-Horsfall (secretada na Alça de Henle) nos túbulos, formando "moldes".</li>
+                            </ul>
+                            <h3>Protótipo: GNPE (Glomerulonefrite Pós-Estreptocócica)</h3>
+                            <p>Ocorre tipicamente em crianças (~7 anos), cerca de 9 dias após faringite (cepas nefritogênicas de Estreptococo Beta-hemolítico Grupo A). Laboratório: Consumo de complemento (C3/C4 baixos) e ASLO elevado.</p>
                         `
                     },
                     {
-                        title: "3. Síndrome Nefrótica (Proteica)",
+                        title: "3. Síndrome Nefrótica (Perda Proteica)",
                         content: `
-                            <p><span class="tag tag-pathology">Perda Proteica</span> Lesão glomerular não inflamatória com perda maciça de proteínas.</p>
-                            <h3>Definição</h3>
+                            <p><span class="tag tag-pathology">Patologia</span> Lesão da barreira de filtração sem inflamação exuberante, permitindo vazamento maciço de proteínas.</p>
+                            <h3>Critérios Diagnósticos</h3>
                             <ul>
-                                [cite_start]<li><strong>Proteinúria Maciça:</strong> > 3,5g/dia[cite: 222].</li>
-                                [cite_start]<li><strong>Consequências:</strong> Hipoalbuminemia, Edema Generalizado (Anasarca), Hiperlipidemia [cite: 223-225].</li>
+                                <li><strong>Proteinúria Maciça:</strong> > 3,5 g/dia (adultos) ou > 50 mg/kg/dia (crianças).</li>
+                                <li><strong>Hipoalbuminemia:</strong> Consequência direta da perda urinária.</li>
+                                <li><strong>Edema Generalizado (Anasarca):</strong> Devido à queda da pressão oncótica plasmática (menos albumina segurando o líquido no vaso).</li>
+                                <li><strong>Hiperlipidemia:</strong> Fígado aumenta síntese de lipoproteínas para compensar a baixa pressão oncótica/perda de proteínas.</li>
                             </ul>
-                            <h3>Riscos Principais</h3>
-                            [cite_start]<p>Perda de imunoglobulinas (risco de infecção) e perda de antitrombina III (risco de trombose/hipercoagulabilidade) [cite: 228-229].</p>
+                            <h3>Complicações Graves</h3>
+                            <ul>
+                                <li><strong>Infecções:</strong> Devido à perda urinária de Imunoglobulinas (IgG) e fatores do complemento.</li>
+                                <li><strong>Trombose (Hipercoagulabilidade):</strong> Perda urinária de anticoagulantes endógenos (Antitrombina III, Proteína C e S).</li>
+                            </ul>
                         `
                     },
                     {
                         title: "4. Injúria Renal (Aguda e Crônica)",
                         content: `
+                            <p><span class="tag tag-clinical">Clínica</span> Perda da função renal (filtração e homeostase).</p>
                             <h3>Injúria Renal Aguda (IRA)</h3>
                             <ul>
-                                <li><strong>Causas Medicamentosas:</strong> Antibióticos, AINEs, IECA. [cite_start]Conduta: suspender droga [cite: 240-244].</li>
-                                [cite_start]<li><strong>Causas Pós-Renais:</strong> Obstrução (cálculos, próstata) [cite: 245-247].</li>
+                                <li><strong>Medicamentosa (Nefrotoxicidade Direta ou Hemodinâmica):</strong>
+                                    <br>- Antibióticos e AINEs (Anti-inflamatórios).
+                                    <br>- IECA (Inibidores da ECA): Alteram a hemodinâmica glomerular.
+                                    <br>- Metformina: Risco de acúmulo e acidose lática (excreção renal).
+                                    <br><em>Conduta:</em> Suspender ou ajustar dose.</li>
+                                <li><strong>Pós-Renal (Obstrutiva):</strong> Cálculos, Hiperplasia Prostática, Neoplasias.</li>
                             </ul>
                             <h3>Injúria Renal Crônica (IRC)</h3>
-                            <p>Perda irreversível. [cite_start]Complicações sistêmicas: Anemia (falta de EPO), Hiperparatireoidismo secundário, Acidose metabólica, Hipercalemia [cite: 248-253].</p>
-                        `
-                    },
-                    {
-                        title: "5. Bexiga Neurogênica",
-                        content: `
-                            <table class="med-table">
-                                <tr><th>Tipo</th><th>Lesão</th><th>Resultado</th></tr>
-                                <tr><td>Bexiga Atônica</td><td>Sensorial (Sacral/Sífilis)</td><td>Incontinência por transbordamento</td></tr>
-                                <tr><td>Bexiga Automática</td><td>Medula acima do sacro</td><td>Reflexo intacto mas involuntário</td></tr>
-                                <tr><td>Bexiga Neurogênica</td><td>Tronco/Medula parcial</td><td>Hiperexcitabilidade (falta de inibição)</td></tr>
-                            </table>
-                            [cite_start]<p class="source-ref">[cite: 259]</p>
+                            <p>Perda irreversível de néfrons. Complicações sistêmicas:</p>
+                            <ul>
+                                <li><strong>Anemia:</strong> Deficiência de Eritropoetina (produzida pelos fibroblastos peritubulares).</li>
+                                <li><strong>Doença Óssea (Hiperparatireoidismo Secundário):</strong> Rim não ativa Vitamina D nem excreta fósforo → Queda de cálcio → Aumento de PTH → Retirada de cálcio do osso.</li>
+                                <li><strong>Distúrbios Eletrolíticos:</strong> Hipercalemia (risco de arritmia) e Acidose Metabólica.</li>
+                            </ul>
                         `
                     }
                 ]
             },
             {
                 id: "male_repro",
-                title: "Fisiologia Reprodutiva Masculina",
-                desc: "Diferenciação sexual, Eixo Hormonal, Espermatogênese e Ciclo de Vida.",
+                title: "Fisiologia Reprodutiva Masculina e Diferenciação",
+                desc: "Do gene SRY à andropausa: controle hormonal, espermatogênese e patologias.",
                 topics: [
                     {
-                        title: "1. Diferenciação Sexual",
+                        title: "1. Determinação e Diferenciação Sexual",
                         content: `
-                            [cite_start]<p><strong>Gene SRY (Cromossomo Y):</strong> Gatilho para testículos na 7ª semana[cite: 357].</p>
-                            <h3>Hormônios Embrionários</h3>
+                            <p><span class="tag tag-physiology">Embriologia</span> A diferenciação ocorre por volta da 7ª semana de gestação.</p>
+                            <h3>Genética e Hormônios Fetais</h3>
                             <ul>
-                                [cite_start]<li><strong>Testosterona:</strong> Mantém Ductos de Wolff (Epidídimo, deferente, vesículas)[cite: 360, 364].</li>
-                                [cite_start]<li><strong>AMH (Antimülleriano):</strong> Degenera Ductos de Müller (que formariam útero/tubas)[cite: 361, 365].</li>
-                                [cite_start]<li><strong>DHT (Di-hidrotestosterona):</strong> Forma a genitália externa (pênis/escroto) [cite: 367-368].</li>
+                                <li><strong>Gene SRY (Cromossomo Y):</strong> O "gatilho" que transforma a gônada indiferenciada em testículo. Sem SRY = Ovário.</li>
+                                <li><strong>Células de Sertoli (Fetais):</strong> Produzem <strong>Hormônio Antimülleriano (AMH)</strong> → Degeneração dos Ductos de Müller (que formariam útero e tubas).</li>
+                                <li><strong>Células de Leydig (Fetais):</strong> Produzem <strong>Testosterona</strong> → Mantém e desenvolve os Ductos de Wolff (Epidídimo, Deferente, Vesículas Seminais).</li>
+                                <li><strong>DHT (Di-hidrotestosterona):</strong> Metabólito potente da testosterona (via 5α-redutase) responsável pela formação da <strong>Genitália Externa</strong> (Pênis e Escroto).</li>
                             </ul>
+                            <h3>Clínica: Descida Testicular</h3>
+                            <p>Dependente de androgênios. Completa-se no 7º mês. Falhas (criptorquidia) podem ocorrer por resistência androgênica.</p>
                         `
                     },
                     {
                         title: "2. Eixo Hipotálamo-Hipófise-Gonadal",
                         content: `
+                            <p>Controle central da função reprodutiva (quiescente na infância, reativado na puberdade).</p>
                             <ul>
-                                [cite_start]<li><strong>Hipotálamo:</strong> Secreta GnRH (pulsátil)[cite: 379].</li>
-                                [cite_start]<li><strong>Hipófise:</strong> Secreta LH (estimula células de Leydig -> Testosterona) e FSH (estimula células de Sertoli -> Espermatogênese) [cite: 380-383].</li>
+                                <li><strong>GnRH (Hipotálamo):</strong> Secreção pulsátil (a cada ~90 min). Pulsos lentos ou contínuos inibem o eixo.</li>
+                                <li><strong>LH (Hipófise Anterior):</strong> Atua nas <strong>Células de Leydig</strong> → Estimula síntese de Testosterona.</li>
+                                <li><strong>FSH (Hipófise Anterior):</strong> Atua nas <strong>Células de Sertoli</strong> → Estimula espermatogênese e produção de inibina.</li>
                             </ul>
-                            <p><strong>Testosterona:</strong> Sintetizada nos testículos. [cite_start]Funções: caracteres secundários, anabolismo muscular, libido, espermatogênese [cite: 385, 408-412].</p>
+                            <h3>Ações da Testosterona (Adulto)</h3>
+                            <ul>
+                                <li>Desenvolvimento muscular e ósseo (anabolismo).</li>
+                                <li>Crescimento da laringe (voz grave).</li>
+                                <li>Libido e comportamento sexual.</li>
+                                <li>Feedback negativo no hipotálamo e hipófise.</li>
+                            </ul>
                         `
                     },
                     {
                         title: "3. Espermatogênese",
                         content: `
-                            [cite_start]<p>Ocorre nos túbulos seminíferos, com suporte das <strong>Células de Sertoli</strong>[cite: 395].</p>
-                            <ul>
-                                <li><strong>Duração:</strong> ~64 dias.</li>
-                                [cite_start]<li><strong>Etapas:</strong> Mitose (espermatogônias) → Meiose (espermatócitos) → Espermiogênese (diferenciação) [cite: 397-400].</li>
-                                [cite_start]<li><strong>Trajeto:</strong> Túbulo → Epidídimo (maturação/armazenamento) → Deferente → Uretra[cite: 396].</li>
-                            </ul>
+                            <p><span class="tag tag-physiology">Processo</span> Produção de gametas nos túbulos seminíferos. Duração média: <strong>64 dias</strong>. Produção: 30 milhões/dia.</p>
+                            <h3>Células de Sertoli ("Nutrizes")</h3>
+                            <p>Formam a barreira hematotesticular, nutrem os espermatozoides e fagocitam restos celulares.</p>
+                            <h3>Etapas do Processo</h3>
+                            <ol>
+                                <li><strong>Mitose:</strong> Proliferação das Espermatogônias (células-tronco).</li>
+                                <li><strong>Meiose:</strong> Redução cromossômica (diploide para haploide) formando Espermatócitos e depois Espermátides.</li>
+                                <li><strong>Espermiogênese:</strong> Diferenciação morfológica (formação de acrossoma, cauda/flagelo e condensação nuclear) transformando espermátide em espermatozoide.</li>
+                            </ol>
+                            <p><strong>Maturação Final:</strong> Ocorre no Epidídimo (aquisição de motilidade).</p>
                         `
                     },
                     {
-                        title: "4. Ciclo de Vida e Clínica",
+                        title: "4. Puberdade e Envelhecimento",
                         content: `
-                            <table class="med-table">
-                                <tr><th>Fase</th><th>Hormônios</th><th>Estado</th></tr>
-                                <tr><td>Fetal</td><td>Altos</td><td>Ativa</td></tr>
-                                <tr><td>Infância</td><td>Baixos</td><td>Quiescente</td></tr>
-                                <tr><td>Puberdade</td><td>Aumentam (Pulsos GnRH)</td><td>Fertilidade (12-16 anos)</td></tr>
-                                <tr><td>Andropausa</td><td>Declínio gradual (>40 anos)</td><td>↓ Massa óssea/muscular, ↓ Libido</td></tr>
-                            </table>
+                            <h3>Puberdade (12-16 anos)</h3>
+                            <p>Ocorre uma "desinibição" do eixo: o hipotálamo torna-se menos sensível ao feedback negativo, permitindo o aumento dos pulsos de GnRH. Sinais iniciais (pelos) envolvem androgênios adrenais + GH + IGF-1.</p>
+                            <h3>Andropausa (Climatério Masculino)</h3>
+                            <p>A partir dos 40 anos, declínio gradual da testosterona e deterioração da função das células de Leydig.</p>
+                            <ul>
+                                <li>Consequências: Perda de massa óssea/muscular, diminuição da libido, depressão e anemia leve.</li>
+                                <li>Diferença da Menopausa: Não há cessação abrupta da fertilidade; muitos homens continuam férteis.</li>
+                            </ul>
                             <h3>Vasectomia</h3>
-                            <p>Espermatogênese continua, mas espermatozoides não são ejaculados. [cite_start]Reversão tem baixa taxa de sucesso devido a anticorpos e fibrose [cite: 431-434].</p>
+                            <p>Interrupção dos ductos deferentes. A espermatogênese continua, mas os espermatozoides são fagocitados. A reversão é difícil devido à fibrose intersticial e formação de anticorpos antiespermatozoides.</p>
                         `
                     }
                 ]
@@ -457,106 +485,138 @@
             {
                 id: "digestive_sys",
                 title: "Fisiologia do Sistema Digestivo",
-                desc: "Controle Neural e Hormonal, GALT e processos iniciais de digestão.",
+                desc: "Regulação neural e hormonal, motilidade e secreções do TGI.",
                 topics: [
                     {
-                        title: "1. Estrutura e Defesa (GALT)",
+                        title: "1. Organização e Defesa (GALT)",
                         content: `
-                            <p>O TGI é um tubo contínuo (meio externo). [cite_start]Possui o <strong>GALT</strong> (Tecido Linfoide Associado ao Intestino), principal sistema imune da mucosa[cite: 286].</p>
+                            <p>O TGI é um tubo contínuo (lúmen = meio externo). Possui sistema nervoso próprio (SNE) e defesas robustas.</p>
+                            <h3>Sistema Imune da Mucosa (GALT)</h3>
                             <ul>
-                                <li><strong>Defesa Imune:</strong> Placas de Peyer, IgA, Mastócitos.</li>
-                                [cite_start]<li><strong>Não-imune:</strong> Ácido gástrico, Muco, Defensinas [cite: 289-293].</li>
+                                <li><strong>Estruturas:</strong> Placas de Peyer, linfócitos difusos.</li>
+                                <li><strong>Defesa Específica:</strong> Secreção de IgA (imunoglobulina predominante nas mucosas).</li>
+                                <li><strong>Defesa Inespecífica:</strong> Ácido gástrico, muco, defensinas e peptídeos em trevo (cicatrização).</li>
                             </ul>
                         `
                     },
                     {
-                        title: "2. Controle Neural (Entérico e Autônomo)",
+                        title: "2. Regulação Neural (Entérico vs Autônomo)",
                         content: `
-                            <h3>Sistema Nervoso Entérico ("Cérebro do Intestino")</h3>
+                            <h3>Sistema Nervoso Entérico (Intrínseco)</h3>
+                            <p>Funciona como um "cérebro local".</p>
                             <ul>
-                                [cite_start]<li><strong>Plexo de Meissner (Submucoso):</strong> Regula secreção e fluxo sanguíneo[cite: 299].</li>
-                                [cite_start]<li><strong>Plexo de Auerbach (Mioentérico):</strong> Regula motilidade muscular[cite: 300].</li>
+                                <li><strong>Plexo Submucoso (Meissner):</strong> Regula secreção glandular e fluxo sanguíneo local.</li>
+                                <li><strong>Plexo Mioentérico (Auerbach):</strong> Localizado entre as camadas musculares, regula a motilidade (peristaltismo).</li>
                             </ul>
-                            <h3>Sistema Autônomo Extrínseco</h3>
+                            <h3>Sistema Nervoso Autônomo (Extrínseco)</h3>
                             <ul>
-                                [cite_start]<li><strong>Parassimpático (ACh):</strong> Excitatório (Estimula digestão/peristaltismo)[cite: 305].</li>
-                                [cite_start]<li><strong>Simpático (Noradrenalina):</strong> Inibitório (Freia a digestão)[cite: 308].</li>
+                                <li><strong>Parassimpático (Acetilcolina):</strong> Efeito EXCITATÓRIO. Aumenta motilidade, relaxa esfíncteres e estimula secreções.</li>
+                                <li><strong>Simpático (Noradrenalina):</strong> Efeito INIBITÓRIO. Contrai esfíncteres, inibe motilidade e desvia fluxo sanguíneo.</li>
                             </ul>
                         `
                     },
                     {
-                        title: "3. Hormônios Gastrointestinais",
+                        title: "3. Hormônios do TGI (Resumo Completo)",
                         content: `
                             <table class="med-table">
-                                <tr><th>Hormônio</th><th>Local</th><th>Ação Principal</th></tr>
-                                <tr><td>Gastrina</td><td>Antro (Cel G)</td><td>Estimula HCl e crescimento mucosa</td></tr>
-                                <tr><td>CCK</td><td>Duodeno (Cel I)</td><td>Estimula enzimas pâncreas e bile; inibe esvaziamento gástrico</td></tr>
-                                <tr><td>Secretina</td><td>Duodeno (Cel S)</td><td>Estimula Bicarbonato pancreático (neutraliza ácido)</td></tr>
-                                <tr><td>GIP</td><td>Duodeno (Cel K)</td><td>Estimula insulina (incretina)</td></tr>
-                                <tr><td>Motilina</td><td>Intestino (Cel M)</td><td>Complexo Motor Migratório (Jejum)</td></tr>
-                                <tr><td>Somatostatina</td><td>Cel D</td><td>"Botão Desligar" (Inibe tudo)</td></tr>
+                                <tr><th>Hormônio</th><th>Fonte</th><th>Função Principal</th></tr>
+                                <tr><td><strong>Gastrina</strong></td><td>Células G (Antro)</td><td>Estimula HCl (parietais) e crescimento da mucosa.</td></tr>
+                                <tr><td><strong>CCK</strong></td><td>Células I (Duodeno)</td><td>Contração da vesícula biliar, enzimas pancreáticas, saciedade.</td></tr>
+                                <tr><td><strong>Secretina</strong></td><td>Células S (Duodeno)</td><td>Estimula Bicarbonato pancreático (neutraliza acidez).</td></tr>
+                                <tr><td><strong>GIP</strong></td><td>Células K</td><td>Estimula insulina (incretina) e inibe secreção gástrica.</td></tr>
+                                <tr><td><strong>Motilina</strong></td><td>Células M</td><td>Gera o Complexo Motor Migratório (limpeza em jejum).</td></tr>
+                                <tr><td><strong>Grelina</strong></td><td>Estômago</td><td>Hormônio da fome (aumenta antes das refeições).</td></tr>
+                                <tr><td><strong>Somatostatina</strong></td><td>Células D</td><td>Inibidor universal (freia secreções e motilidade).</td></tr>
+                                <tr><td><strong>GLP-1</strong></td><td>Células L (Íleo)</td><td>Estimula insulina, saciedade e retarda esvaziamento gástrico.</td></tr>
                             </table>
-                            [cite_start]<p class="source-ref">[cite: 340]</p>
                         `
                     },
                     {
-                        title: "4. Mastigação, Saliva e Deglutição",
+                        title: "4. Motilidade e Secreção: Boca e Esôfago",
                         content: `
+                            <h3>Salivação</h3>
+                            <p>1 a 1,5L/dia. Controle <strong>exclusivamente neural</strong>.</p>
                             <ul>
-                                <li><strong>Saliva:</strong> Hipotônica, contém Ptialina e IgA. [cite_start]Regulação exclusivamente neural (Parassimpático aumenta volume) [cite: 321-326].</li>
-                                [cite_start]<li><strong>Deglutição:</strong> Fase voluntária → Fase Faríngea (Reflexa, protege via aérea) → Fase Esofágica (Peristaltismo) [cite: 330-334].</li>
+                                <li>Parassimpático: Saliva aquosa, abundante (enzimática).</li>
+                                <li>Simpático: Saliva espessa, pouca quantidade (rica em muco).</li>
+                                <li>Funções: Ptialina (amido), IgA (defesa), Lisozima (bactericida).</li>
                             </ul>
+                            <h3>Deglutição (3 Fases)</h3>
+                            <ol>
+                                <li><strong>Oral (Voluntária):</strong> Língua empurra bolo para a faringe.</li>
+                                <li><strong>Faríngea (Involuntária/Reflexa):</strong> Palato mole sobe (fecha nasofaringe), Epiglote fecha laringe (protege via aérea), Esfíncter Esofágico Superior relaxa.</li>
+                                <li><strong>Esofágica (Involuntária):</strong> Ondas peristálticas primárias e secundárias levam alimento ao estômago.</li>
+                            </ol>
                         `
                     }
                 ]
             },
             {
                 id: "renal_phys",
-                title: "Fisiologia Renal (Mecanismos)",
-                desc: "Anatomia do Néfron, Filtração, Reabsorção, Secreção e Regulação (SRAA/ADH).",
+                title: "Fisiologia do Sistema Renal (Mecanismos)",
+                desc: "Filtração Glomerular, Reabsorção Tubular e Regulação (SRAA/ADH).",
                 topics: [
                     {
-                        title: "1. O Néfron e Processos Básicos",
+                        title: "1. A Unidade Funcional: Néfron",
                         content: `
-                            <p><strong>Filtração Glomerular:</strong> Processo passivo no glomérulo. Barreira (Podócitos) impede proteínas. [cite_start]Filtra ~120ml/min [cite: 27-35].</p>
-                            [cite_start]<p><strong>Tipos de Néfrons:</strong> Corticais (85%) e Justaglomerulares (15% - importantes para concentrar urina)[cite: 23].</p>
+                            <p>Cada rim possui ~1 milhão de néfrons. <strong>Néfrons Justaglomerulares (15%)</strong> possuem alças de Henle longas, cruciais para concentrar a urina (medula).</p>
+                            <h3>Barreira de Filtração Glomerular</h3>
+                            <p>Seleciona por tamanho (< 70kDa) e carga (negativa é repelida). Camadas:</p>
+                            <ol>
+                                <li>Endotélio Capilar (fenestrado).</li>
+                                <li>Membrana Basal (colágeno e proteoglicanos - carga negativa).</li>
+                                <li>Podócitos (fendas de filtração).</li>
+                            </ol>
+                            <p><strong>TFG Normal:</strong> ~120 ml/min (170-180L/dia).</p>
+                        `
+                    },
+                    {
+                        title: "2. Transporte Tubular (Reabsorção e Secreção)",
+                        content: `
+                            <h3>Túbulo Contorcido Proximal (TCP)</h3>
+                            <p>O "trabalhador pesado". Reabsorve 80% do filtrado (iso-osmótico).</p>
                             <ul>
-                                <li><strong>Reabsorção Tubular:</strong> Recupera o útil (Glicose, Na, Água). [cite_start]Glicose é 100% reabsorvida no T. Proximal (até limiar de 180mg/dL)[cite: 40, 85].</li>
-                                [cite_start]<li><strong>Secreção Tubular:</strong> Elimina o lixo (Drogas, H+, K+) do sangue para o túbulo [cite: 47-50].</li>
+                                <li><strong>Glicose:</strong> 100% reabsorvida aqui (cotransporte com Na+).
+                                    <br><em>Limiar Renal:</em> 160-180 mg/dL. Acima disso = Glicosúria (Diabetes).</li>
+                                <li>Outros: Aminoácidos (100%), Bicarbonato, Na+, Cl-, Água.</li>
+                                <li>Secreção: Ácidos orgânicos, medicamentos, H+.</li>
+                            </ul>
+                            <h3>Alça de Henle (Mecanismo de Contracorrente)</h3>
+                            <ul>
+                                <li><strong>Ramo Descendente:</strong> Permeável à ÁGUA, impermeável a solutos (urina concentra).</li>
+                                <li><strong>Ramo Ascendente:</strong> Impermeável à água, BOMBEIA solutos (Na+/K+/2Cl-). Dilui a urina e deixa a medula renal hiperosmolar (salgada).</li>
                             </ul>
                         `
                     },
                     {
-                        title: "2. Funções por Segmento",
-                        content: `
-                            <ul>
-                                [cite_start]<li><strong>Túbulo Proximal:</strong> Reabsorve 80% de tudo (água e solutos)[cite: 56].</li>
-                                <li><strong>Alça de Henle:</strong> Contracorrente. [cite_start]Descendente (permeável à água), Ascendente (impermeável à água, bomba Na+) [cite: 58-59].</li>
-                                <li><strong>Túbulo Distal/Coletor:</strong> Ajuste fino. [cite_start]Local de ação da Aldosterona e ADH [cite: 60-65].</li>
-                            </ul>
-                        `
-                    },
-                    {
-                        title: "3. Regulação Hormonal (SRAA e ADH)",
+                        title: "3. Regulação Hormonal (Ajuste Fino)",
                         content: `
                             <h3>SRAA (Sistema Renina-Angiotensina-Aldosterona)</h3>
-                            <p>Ativado por pressão baixa. Renina → Angiotensina II → Aldosterona. [cite_start]Aumenta reabsorção de Na+ e Água = Aumenta Pressão [cite: 67-71].</p>
-                            <h3>ADH (Antidiurético)</h3>
-                            <p>Secretado se faltar água (alta osmolaridade). [cite_start]Abre canais de água (aquaporinas) no ducto coletor para concentrar a urina [cite: 72-74].</p>
+                            <p>Ativado por: Hipotensão, baixo Na+ ou estímulo simpático.</p>
+                            <ol>
+                                <li>Rim libera <strong>Renina</strong>.</li>
+                                <li>Renina converte Angiotensinogênio → Angiotensina I.</li>
+                                <li>ECA (pulmão) converte Angiotensina I → <strong>Angiotensina II</strong>.</li>
+                            </ol>
+                            <p><strong>Ações da Angiotensina II:</strong> Vasoconstrição potente, estimula sede, estimula ADH e estimula Aldosterona.</p>
+                            <p><strong>Aldosterona (Suprarrenal):</strong> Atua no Túbulo Distal/Coletor. Reabsorve Na+ (e água junto) e excreta K+.</p>
+                            <h3>ADH (Vasopressina)</h3>
+                            <p>Produzido no hipotálamo, liberado pela neuro-hipófise em resposta à hiperosmolaridade (sangue concentrado). Insere <strong>Aquaporinas</strong> no Ducto Coletor, permitindo reabsorção de água livre.</p>
                         `
                     },
                     {
-                        title: "4. Composição Urinária (24h)",
+                        title: "4. Balanço Final (24h)",
                         content: `
                             <table class="med-table">
-                                <tr><th>Substância</th><th>Filtração</th><th>Reabsorção</th></tr>
-                                <tr><td>Água</td><td>180 L</td><td>99%</td></tr>
-                                <tr><td>Sódio</td><td>540 g</td><td>99.4%</td></tr>
-                                <tr><td>Glicose</td><td>140 g</td><td>100% (se normal)</td></tr>
-                                <tr><td>Ureia</td><td>53 g</td><td>45% (excreta resto)</td></tr>
+                                <tr><th>Substância</th><th>Filtrado</th><th>Reabsorvido</th><th>Excretado</th></tr>
+                                <tr><td>Água</td><td>180 L</td><td>99%</td><td>~1,5 L</td></tr>
+                                <tr><td>Sódio</td><td>540 g</td><td>99,4%</td><td>3,3 g</td></tr>
+                                <tr><td>Glicose</td><td>140 g</td><td>100%</td><td>0 g</td></tr>
+                                <tr><td>Ureia</td><td>53 g</td><td>45%</td><td>32 g</td></tr>
                             </table>
-                            [cite_start]<p class="source-ref">[cite: 81]</p>
-                            [cite_start]<p><strong>Outras Funções Renais:</strong> Produção de Eritropoetina (hemácias) e Ativação da Vitamina D [cite: 94-95].</p>
+                            <p><strong>Outras Funções do Rim:</strong>
+                            <br>- Ativação da Vitamina D (1,25-di-hidroxicolecalciferol) p/ metabolismo do Ca++.
+                            <br>- Produção de Eritropoetina (EPO) em resposta à hipóxia.</p>
                         `
                     }
                 ]
@@ -578,7 +638,7 @@
                         <div class="module-title">${mod.title}</div>
                         <div class="module-desc">${mod.desc}</div>
                     </div>
-                    <div class="btn-access">Abrir Resumo</div>
+                    <div class="btn-access">Acessar Resumo</div>
                 `;
                 card.onclick = () => openModal(mod);
                 mainGrid.appendChild(card);
@@ -589,7 +649,7 @@
             modalTitle.innerText = moduleData.title;
             modalBody.innerHTML = ''; 
 
-            moduleData.topics.forEach((topic, index) => {
+            moduleData.topics.forEach((topic) => {
                 const item = document.createElement('div');
                 item.className = 'accordion-item';
 
@@ -607,12 +667,14 @@
                     
                     const icon = this.querySelector('span');
                     if (content.classList.contains('open')) {
-                        // CORREÇÃO JS: Calcula altura real + pequeno buffer de 30px
-                        content.style.maxHeight = (content.scrollHeight + 30) + "px";
-                        icon.innerText = '-';
+                        // Altura dinâmica + buffer
+                        content.style.maxHeight = (content.scrollHeight + 40) + "px";
+                        icon.innerText = '−';
+                        icon.style.fontSize = "1.2rem";
                     } else {
                         content.style.maxHeight = null;
                         icon.innerText = '+';
+                        icon.style.fontSize = "1rem";
                     }
                 };
 
