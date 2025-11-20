@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorex Medicina: Fisiologia Integrada</title>
+    <style>
+        :root {
+            --primary-color: #005b96; /* Azul Médico Escuro */
+            --secondary-color: #03396c;
+            --accent-color: #b3cde0;
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --text-light: #666;
+            --highlight-bg: #e3f2fd;
+            --border-radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            margin-top: 20px;
+            max-width: 800px;
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Grid Principal */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* Cards Principais */
+        .module-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border-top: 6px solid var(--primary-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .module-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+
+        .module-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .module-desc {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .btn-access {
+            align-self: flex-start;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 95%;
+            max-width: 900px;
+            height: 85vh;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+            flex-grow: 1;
+        }
+
+        /* Accordion (Subtópicos) */
+        .accordion-item {
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            width: 100%;
+            background-color: white;
+            padding: 15px 20px;
+            text-align: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-header:hover {
+            background-color: var(--highlight-bg);
+        }
+
+        .accordion-header.active {
+            background-color: var(--highlight-bg);
+            color: var(--primary-color);
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .accordion-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s;
+            background-color: white;
+        }
+
+        .accordion-content.open {
+            padding: 20px;
+            max-height: 2000px; /* Valor alto para permitir expansão */
+        }
+
+        /* Tipografia do Conteúdo */
+        .content-text h3 {
+            color: var(--primary-color);
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .content-text p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .content-text ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .content-text li {
+            margin-bottom: 5px;
+        }
+
+        /* Tabelas Médicas */
+        .med-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .med-table th, .med-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .med-table th {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .med-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Notas de Rodapé/Citações */
+        .source-ref {
+            font-size: 0.75em;
+            color: #999;
+            vertical-align: super;
+            margin-left: 2px;
+        }
+
+        /* Tags Especiais */
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .tag-pathology { background-color: #ffebee; color: #c62828; }
+        .tag-physiology { background-color: #e8f5e9; color: #2e7d32; }
+        .tag-anatomy { background-color: #fff3e0; color: #ef6c00; }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            color: #888;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .module-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Memorex: Medicina Integrada</h1>
+        <p class="subtitle">Resumos Interativos de Fisiologia e Patologia</p>
+    </header>
+
+    <div class="grid-container" id="mainGrid">
+        </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Título do Módulo</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Baseado em fontes acadêmicas [1-436]. Uso exclusivo para estudo.</p>
+    </footer>
+
+    <script>
+        // DADOS DOS ARQUIVOS CONVERTIDOS EM OBJETOS
+        const modules = [
+            {
+                id: "renal_pathology",
+                title: "Fisiologia Renal, Glomerulopatias e Injúria",
+                desc: "Equilíbrio acidobásico, Síndromes Nefrítica e Nefrótica, IRA vs IRC e Bexiga Neurogênica.",
+                topics: [
+                    {
+                        title: "1. Equilíbrio Acidobásico",
+                        content: `
+                            <p>O equilíbrio é centrado na regulação de CO₂, H⁺ e HCO₃⁻. Valores de pH < 7.35 indicam acidose; > 7.45 indicam alcalose <span class="source-ref">[12-16]</span>.</p>
+                            <h3>Mecanismos Compensatórios</h3>
+                            <ul>
+                                <li><strong>Pulmonar (Rápido):</strong> Ajusta o CO₂ via frequência respiratória. Hiperventilação elimina ácido (CO₂); Hipoventilação retém ácido <span class="source-ref">[20-22]</span>.</li>
+                                <li><strong>Renal (Lento):</strong> Reabsorve HCO₃⁻ ou excreta H⁺ (regeneração de bicarbonato) <span class="source-ref">[23-26]</span>.</li>
+                            </ul>
+                            <table class="med-table">
+                                <tr><th>Origem</th><th>Distúrbio</th><th>Causa Primária</th></tr>
+                                <tr><td>Renal</td><td>Acidose Metabólica</td><td>↓ HCO₃⁻ ou ↑ H⁺</td></tr>
+                                <tr><td>Renal</td><td>Alcalose Metabólica</td><td>↑ HCO₃⁻ ou ↓ H⁺</td></tr>
+                                <tr><td>Pulmonar</td><td>Acidose Respiratória</td><td>Retenção de CO₂ (hipoventilação)</td></tr>
+                                <tr><td>Pulmonar</td><td>Alcalose Respiratória</td><td>Perda de CO₂ (hiperventilação)</td></tr>
+                            </table>
+                        `
+                    },
+                    {
+                        title: "2. Síndrome Nefrítica (Inflamatória)",
+                        content: `
+                            <p><span class="tag tag-pathology">Inflamação</span> Protótipo: Glomerulonefrite Pós-Estreptocócica (GNPE) <span class="source-ref">[56]</span>.</p>
+                            <h3>Fisiopatologia</h3>
+                            <p>Inflamação glomerular reduz fendas de filtração → Oligúria → Retenção de Na/Água → Hipertensão e Edema <span class="source-ref">[40-41]</span>.</p>
+                            <h3>Achados Clínicos e Laboratoriais</h3>
+                            <ul>
+                                <li><strong>Tríade:</strong> Hematúria, Hipertensão, Edema.</li>
+                                <li><strong>Urina:</strong> Cilindros Hemáticos e Dismorfismo Eritrocitário (hemácias fragmentadas) <span class="source-ref">[45-46]</span>.</li>
+                                <li><strong>GNPE:</strong> Comum em crianças pós-faringite. C3/C4 reduzidos, ASLO elevado <span class="source-ref">[57-58]</span>.</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "3. Síndrome Nefrótica (Proteica)",
+                        content: `
+                            <p><span class="tag tag-pathology">Perda Proteica</span> Lesão glomerular não inflamatória com perda maciça de proteínas.</p>
+                            <h3>Definição</h3>
+                            <ul>
+                                <li><strong>Proteinúria Maciça:</strong> > 3,5g/dia <span class="source-ref">[62]</span>.</li>
+                                <li><strong>Consequências:</strong> Hipoalbuminemia, Edema Generalizado (Anasarca), Hiperlipidemia <span class="source-ref">[63-65]</span>.</li>
+                            </ul>
+                            <h3>Riscos Principais</h3>
+                            <p>Perda de imunoglobulinas (risco de infecção) e perda de antitrombina III (risco de trombose/hipercoagulabilidade) <span class="source-ref">[68-69]</span>.</p>
+                        `
+                    },
+                    {
+                        title: "4. Injúria Renal (Aguda e Crônica)",
+                        content: `
+                            <h3>Injúria Renal Aguda (IRA)</h3>
+                            <ul>
+                                <li><strong>Causas Medicamentosas:</strong> Antibióticos, AINEs, IECA. Conduta: suspender droga <span class="source-ref">[80-84]</span>.</li>
+                                <li><strong>Causas Pós-Renais:</strong> Obstrução (cálculos, próstata) <span class="source-ref">[85-87]</span>.</li>
+                            </ul>
+                            <h3>Injúria Renal Crônica (IRC)</h3>
+                            <p>Perda irreversível. Complicações sistêmicas: Anemia (falta de EPO), Hiperparatireoidismo secundário, Acidose metabólica, Hipercalemia <span class="source-ref">[88-93]</span>.</p>
+                        `
+                    },
+                    {
+                        title: "5. Bexiga Neurogênica",
+                        content: `
+                            <table class="med-table">
+                                <tr><th>Tipo</th><th>Lesão</th><th>Resultado</th></tr>
+                                <tr><td>Bexiga Atônica</td><td>Sensorial (Sacral/Sífilis)</td><td>Incontinência por transbordamento</td></tr>
+                                <tr><td>Bexiga Automática</td><td>Medula acima do sacro</td><td>Reflexo intacto mas involuntário</td></tr>
+                                <tr><td>Bexiga Neurogênica</td><td>Tronco/Medula parcial</td><td>Hiperexcitabilidade (falta de inibição)</td></tr>
+                            </table>
+                            <p class="source-ref">[99]</p>
+                        `
+                    }
+                ]
+            },
+            {
+                id: "male_repro",
+                title: "Fisiologia Reprodutiva Masculina",
+                desc: "Diferenciação sexual, Eixo Hormonal, Espermatogênese e Ciclo de Vida.",
+                topics: [
+                    {
+                        title: "1. Diferenciação Sexual",
+                        content: `
+                            <p><strong>Gene SRY (Cromossomo Y):</strong> Gatilho para testículos na 7ª semana <span class="source-ref">[179]</span>.</p>
+                            <h3>Hormônios Embrionários</h3>
+                            <ul>
+                                <li><strong>Testosterona:</strong> Mantém Ductos de Wolff (Epidídimo, deferente, vesículas) <span class="source-ref">[182, 186]</span>.</li>
+                                <li><strong>AMH (Antimülleriano):</strong> Degenera Ductos de Müller (que formariam útero/tubas) <span class="source-ref">[183, 187]</span>.</li>
+                                <li><strong>DHT (Di-hidrotestosterona):</strong> Forma a genitália externa (pênis/escroto) <span class="source-ref">[189]</span>.</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "2. Eixo Hipotálamo-Hipófise-Gonadal",
+                        content: `
+                            <ul>
+                                <li><strong>Hipotálamo:</strong> Secreta GnRH (pulsátil) <span class="source-ref">[201]</span>.</li>
+                                <li><strong>Hipófise:</strong> Secreta LH (estimula células de Leydig -> Testosterona) e FSH (estimula células de Sertoli -> Espermatogênese) <span class="source-ref">[202-205]</span>.</li>
+                            </ul>
+                            <p><strong>Testosterona:</strong> Sintetizada nos testículos. Funções: caracteres secundários, anabolismo muscular, libido, espermatogênese <span class="source-ref">[207, 230]</span>.</p>
+                        `
+                    },
+                    {
+                        title: "3. Espermatogênese",
+                        content: `
+                            <p>Ocorre nos túbulos seminíferos, com suporte das <strong>Células de Sertoli</strong> <span class="source-ref">[217]</span>.</p>
+                            <ul>
+                                <li><strong>Duração:</strong> ~64 dias.</li>
+                                <li><strong>Etapas:</strong> Mitose (espermatogônias) → Meiose (espermatócitos) → Espermiogênese (diferenciação) <span class="source-ref">[219-222]</span>.</li>
+                                <li><strong>Trajeto:</strong> Túbulo → Epidídimo (maturação/armazenamento) → Deferente → Uretra <span class="source-ref">[218]</span>.</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "4. Ciclo de Vida e Clínica",
+                        content: `
+                            <table class="med-table">
+                                <tr><th>Fase</th><th>Hormônios</th><th>Estado</th></tr>
+                                <tr><td>Fetal</td><td>Altos</td><td>Ativa</td></tr>
+                                <tr><td>Infância</td><td>Baixos</td><td>Quiescente</td></tr>
+                                <tr><td>Puberdade</td><td>Aumentam (Pulsos GnRH)</td><td>Fertilidade (12-16 anos)</td></tr>
+                                <tr><td>Andropausa</td><td>Declínio gradual (>40 anos)</td><td>↓ Massa óssea/muscular, ↓ Libido</td></tr>
+                            </table>
+                            <h3>Vasectomia</h3>
+                            <p>Espermatogênese continua, mas espermatozoides não são ejaculados. Reversão tem baixa taxa de sucesso devido a anticorpos e fibrose <span class="source-ref">[253-256]</span>.</p>
+                        `
+                    }
+                ]
+            },
+            {
+                id: "digestive_sys",
+                title: "Fisiologia do Sistema Digestivo",
+                desc: "Controle Neural e Hormonal, GALT e processos iniciais de digestão.",
+                topics: [
+                    {
+                        title: "1. Estrutura e Defesa (GALT)",
+                        content: `
+                            <p>O TGI é um tubo contínuo (meio externo). Possui o <strong>GALT</strong> (Tecido Linfoide Associado ao Intestino), principal sistema imune da mucosa <span class="source-ref">[285]</span>.</p>
+                            <ul>
+                                <li><strong>Defesa Imune:</strong> Placas de Peyer, IgA, Mastócitos.</li>
+                                <li><strong>Não-imune:</strong> Ácido gástrico, Muco, Defensinas <span class="source-ref">[288-292]</span>.</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "2. Controle Neural (Entérico e Autônomo)",
+                        content: `
+                            <h3>Sistema Nervoso Entérico ("Cérebro do Intestino")</h3>
+                            <ul>
+                                <li><strong>Plexo de Meissner (Submucoso):</strong> Regula secreção e fluxo sanguíneo <span class="source-ref">[298]</span>.</li>
+                                <li><strong>Plexo de Auerbach (Mioentérico):</strong> Regula motilidade muscular <span class="source-ref">[299]</span>.</li>
+                            </ul>
+                            <h3>Sistema Autônomo Extrínseco</h3>
+                            <ul>
+                                <li><strong>Parassimpático (ACh):</strong> Excitatório (Estimula digestão/peristaltismo) <span class="source-ref">[304]</span>.</li>
+                                <li><strong>Simpático (Noradrenalina):</strong> Inibitório (Freia a digestão) <span class="source-ref">[307]</span>.</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "3. Hormônios Gastrointestinais",
+                        content: `
+                            <table class="med-table">
+                                <tr><th>Hormônio</th><th>Local</th><th>Ação Principal</th></tr>
+                                <tr><td>Gastrina</td><td>Antro (Cel G)</td><td>Estimula HCl e crescimento mucosa</td></tr>
+                                <tr><td>CCK</td><td>Duodeno (Cel I)</td><td>Estimula enzimas pâncreas e bile; inibe esvaziamento gástrico</td></tr>
+                                <tr><td>Secretina</td><td>Duodeno (Cel S)</td><td>Estimula Bicarbonato pancreático (neutraliza ácido)</td></tr>
+                                <tr><td>GIP</td><td>Duodeno (Cel K)</td><td>Estimula insulina (incretina)</td></tr>
+                                <tr><td>Motilina</td><td>Intestino (Cel M)</td><td>Complexo Motor Migratório (Jejum)</td></tr>
+                                <tr><td>Somatostatina</td><td>Cel D</td><td>"Botão Desligar" (Inibe tudo)</td></tr>
+                            </table>
+                            <p class="source-ref">[339]</p>
+                        `
+                    },
+                    {
+                        title: "4. Mastigação, Saliva e Deglutição",
+                        content: `
+                            <ul>
+                                <li><strong>Saliva:</strong> Hipotônica, contém Ptialina e IgA. Regulação exclusivamente neural (Parassimpático aumenta volume) <span class="source-ref">[320-325]</span>.</li>
+                                <li><strong>Deglutição:</strong> Fase voluntária → Fase Faríngea (Reflexa, protege via aérea) → Fase Esofágica (Peristaltismo) <span class="source-ref">[328-332]</span>.</li>
+                            </ul>
+                        `
+                    }
+                ]
+            },
+            {
+                id: "renal_phys",
+                title: "Fisiologia Renal (Mecanismos)",
+                desc: "Anatomia do Néfron, Filtração, Reabsorção, Secreção e Regulação (SRAA/ADH).",
+                topics: [
+                    {
+                        title: "1. O Néfron e Processos Básicos",
+                        content: `
+                            <p><strong>Filtração Glomerular:</strong> Processo passivo no glomérulo. Barreira (Podócitos) impede proteínas. Filtra ~120ml/min <span class="source-ref">[366-375]</span>.</p>
+                            <p><strong>Tipos de Néfrons:</strong> Corticais (85%) e Justaglomerulares (15% - importantes para concentrar urina) <span class="source-ref">[363]</span>.</p>
+                            <ul>
+                                <li><strong>Reabsorção Tubular:</strong> Recupera o útil (Glicose, Na, Água). Glicose é 100% reabsorvida no T. Proximal (até limiar de 180mg/dL) <span class="source-ref">[376, 425]</span>.</li>
+                                <li><strong>Secreção Tubular:</strong> Elimina o lixo (Drogas, H+, K+) do sangue para o túbulo <span class="source-ref">[388]</span>.</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "2. Funções por Segmento",
+                        content: `
+                            <ul>
+                                <li><strong>Túbulo Proximal:</strong> Reabsorve 80% de tudo (água e solutos) <span class="source-ref">[396]</span>.</li>
+                                <li><strong>Alça de Henle:</strong> Contracorrente. Descendente (permeável à água), Ascendente (impermeável à água, bomba Na+) <span class="source-ref">[398]</span>.</li>
+                                <li><strong>Túbulo Distal/Coletor:</strong> Ajuste fino. Local de ação da Aldosterona e ADH <span class="source-ref">[400]</span>.</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "3. Regulação Hormonal (SRAA e ADH)",
+                        content: `
+                            <h3>SRAA (Sistema Renina-Angiotensina-Aldosterona)</h3>
+                            <p>Ativado por pressão baixa. Renina → Angiotensina II → Aldosterona. Aumenta reabsorção de Na+ e Água = Aumenta Pressão <span class="source-ref">[407-411]</span>.</p>
+                            <h3>ADH (Antidiurético)</h3>
+                            <p>Secretado se faltar água (alta osmolaridade). Abre canais de água (aquaporinas) no ducto coletor para concentrar a urina <span class="source-ref">[412-414]</span>.</p>
+                        `
+                    },
+                    {
+                        title: "4. Composição Urinária (24h)",
+                        content: `
+                            <table class="med-table">
+                                <tr><th>Substância</th><th>Filtração</th><th>Reabsorção</th></tr>
+                                <tr><td>Água</td><td>180 L</td><td>99%</td></tr>
+                                <tr><td>Sódio</td><td>540 g</td><td>99.4%</td></tr>
+                                <tr><td>Glicose</td><td>140 g</td><td>100% (se normal)</td></tr>
+                                <tr><td>Ureia</td><td>53 g</td><td>45% (excreta resto)</td></tr>
+                            </table>
+                            <p class="source-ref">[421]</p>
+                            <p><strong>Outras Funções Renais:</strong> Produção de Eritropoetina (hemácias) e Ativação da Vitamina D <span class="source-ref">[434-435]</span>.</p>
+                        `
+                    }
+                ]
+            }
+        ];
+
+        // LÓGICA DE RENDERIZAÇÃO
+
+        const mainGrid = document.getElementById('mainGrid');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+
+        function renderModules() {
+            mainGrid.innerHTML = '';
+            modules.forEach(mod => {
+                const card = document.createElement('div');
+                card.className = 'module-card';
+                card.innerHTML = `
+                    <div>
+                        <div class="module-title">${mod.title}</div>
+                        <div class="module-desc">${mod.desc}</div>
+                    </div>
+                    <div class="btn-access">Abrir Resumo</div>
+                `;
+                card.onclick = () => openModal(mod);
+                mainGrid.appendChild(card);
+            });
+        }
+
+        function openModal(moduleData) {
+            modalTitle.innerText = moduleData.title;
+            modalBody.innerHTML = ''; // Limpa conteúdo anterior
+
+            moduleData.topics.forEach((topic, index) => {
+                // Cria o item do acordeão
+                const item = document.createElement('div');
+                item.className = 'accordion-item';
+
+                // Header do item
+                const header = document.createElement('button');
+                header.className = 'accordion-header';
+                header.innerHTML = `${topic.title} <span>+</span>`;
+                
+                // Conteúdo do item
+                const content = document.createElement('div');
+                content.className = 'accordion-content';
+                content.innerHTML = `<div class="content-text">${topic.content}</div>`;
+
+                // Evento de clique
+                header.onclick = function() {
+                    // Fecha outros (opcional, estilo acordeão estrito)
+                    /*
+                    const allContents = modalBody.querySelectorAll('.accordion-content');
+                    const allHeaders = modalBody.querySelectorAll('.accordion-header');
+                    allContents.forEach(c => { if(c !== content) { c.style.maxHeight = null; c.classList.remove('open'); }});
+                    allHeaders.forEach(h => { if(h !== header) { h.classList.remove('active'); h.querySelector('span').innerText = '+'; }});
+                    */
+
+                    // Alterna o atual
+                    this.classList.toggle('active');
+                    content.classList.toggle('open');
+                    
+                    const icon = this.querySelector('span');
+                    if (content.classList.contains('open')) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.innerText = '-';
+                    } else {
+                        content.style.maxHeight = null;
+                        icon.innerText = '+';
+                    }
+                };
+
+                item.appendChild(header);
+                item.appendChild(content);
+                modalBody.appendChild(item);
+            });
+
+            modalOverlay.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modalOverlay.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modalOverlay) {
+                closeModal();
+            }
+        }
+
+        // Iniciar
+        renderModules();
+
+    </script>
+</body>
+</html>
